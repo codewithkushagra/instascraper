@@ -70,16 +70,16 @@ def generatePDF(num):
   
     pdf.add_page()
 
-    pdf.set_font("Arial", size = 6)
+    pdf.set_font("Arial", size = 12)
     for text in text_post:
         txt_post=open(text, "r")
         
         for x in txt_post:
             x = x.encode('latin-1', 'replace').decode('latin-1')
-            x.replace('?','')
+            x=x.replace("?","")
             print(x)
 
-            pdf.multi_cell(200, 3, txt = x, align = 'L')
+            pdf.multi_cell(200, 5, txt = x, align = 'L')
         pdf.output(f"./pdf_file/b{num2}.pdf")
         
 
