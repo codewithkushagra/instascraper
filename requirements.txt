@@ -1,0 +1,6 @@
+fpdf==1.7.2
+img2pdf==0.4.1
+requests==2.22.0
+requests-unixsocket==0.2.0
+xkit==0.0.0
+zope.interface==5.4.0

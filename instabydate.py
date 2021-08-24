@@ -5,6 +5,8 @@ from PIL import Image
 
 import instaloader
 
+import PyPDF2
+
 from datetime import datetime
 
 from instaloader import Profile
@@ -17,7 +19,7 @@ L = instaloader.Instaloader()
 
 profile = Profile.from_username(L.context, 'history_of_modern_india')
 def getTodaysPost():
-    i=0
+    i=1
     for post in profile.get_posts():
         print(post.date)
             
@@ -61,19 +63,38 @@ def generatePDF(num):
 
     print(imgRGB)
     img1=imgRGB.pop(0)
-    img1.save(f'./pdf_file/{num}.pdf',save_all=True, append_images=imgRGB)
-    # num*=2
+    img1.save(f'./pdf_file/a{num}.pdf',save_all=True, append_images=imgRGB)
+    num2=num*100
     
-    # pdf = FPDF()
+    pdf = FPDF()
   
-    # pdf.add_page()
+    pdf.add_page()
 
-    # pdf.set_font("Arial", size = 15)
-    # for text in text_post:
-    #     txt_post=open(text, "r")
-    #     for x in txt_post:
-    #         pdf.cell(200, 10, txt = x, ln = 1, align = 'C')
-    #     pdf.output(f"./pdf_file/{num}.pdf")
+    pdf.set_font("Arial", size = 6)
+    for text in text_post:
+        txt_post=open(text, "r")
+        
+        for x in txt_post:
+            x = x.encode('latin-1', 'replace').decode('latin-1')
+            x.replace('?','')
+            print(x)
+
+            pdf.multi_cell(200, 3, txt = x, align = 'L')
+        pdf.output(f"./pdf_file/b{num2}.pdf")
+        
+
+        mergeFile = PyPDF2.PdfFileMerger()
+
+        mergeFile.append(PyPDF2.PdfFileReader(f"./pdf_file/b{num2}.pdf", 'rb'))
+
+        mergeFile.append(PyPDF2.PdfFileReader(f'./pdf_file/a{num}.pdf', 'rb'))
+
+        
+
+        os.remove(f'./pdf_file/b{num2}.pdf')
+        os.remove(f'./pdf_file/a{num}.pdf')
+        mergeFile.write(f'./pdf_file/{num}.pdf')
+
     
      
 # generatePDF()
